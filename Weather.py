@@ -1,6 +1,8 @@
 import csv
 import requests
 import json
+import amadeus
+from cachetools import cached, TTLCache
 
 class Weather:
 
@@ -14,6 +16,10 @@ class Weather:
 
     def makeApiRequest(self, lat, lon):
         return requests.get(self.address + self.lat + lat + self.lon + lon + self.apiID + self.idi).json()
+
+
+""" Manejar los errores de las peticiones """
+
 
 
 
