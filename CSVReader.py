@@ -1,5 +1,6 @@
 import pandas as pd
 import csv
+import json
 
 
 class Reader:
@@ -8,11 +9,18 @@ class Reader:
         self.__dict = {}
 
     def readNonRepeated(self, filename) -> list:
+        dicti =[]
         with open(filename) as File:
             reader = csv.reader(File, delimiter=',', quotechar='"')
-            for row in reader:
-                self.__dict.setdefault(row[0], row[1])
-            print(self.__dict)
+            for id, row in enumerate(reader):
+                if id == 0:
+                    continue
+                if not (row[0] in dicti):
+                    dicti.append(row[0])
+                if not (row[1] in dicti):
+                    dicti.append(row[1])
+        dicti.sort()
+        return dicti
 
     def readFile(self, filename) -> list:
         data = []
@@ -22,4 +30,5 @@ class Reader:
                 data.append(row)
         return data
 
-
+    def read_airports_db(self, filename):
+        return json.load(open(filename))
