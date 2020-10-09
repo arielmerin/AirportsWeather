@@ -8,11 +8,9 @@ climita = Weather()
 lector = Reader()
 # print(climita.makeApiRequest('19.3371', '-99.566'))
 # data = lector.readFile(ruta_archivo)
-toGet = lector.readNonRepeated(lector.read_headers(dataset1), ['origin_latitude', 'origin_longitude', 'destination_longitude', 'destination_latitude'], dataset1)
 # print(data)
 # print("Separated\n\n\n")
 # print(toGet)
-print(len(toGet))
 # print(lector.read_airports_db('resources/city.list.json'))
 
 # climita.makeApiRequest_by_coordinates(19.3317, -99.566)
@@ -27,9 +25,18 @@ def encontrar_ciudad(ciudad, ruta_ciudades_validas)-> bool:
         if ciudad.lower() in i['name'].lower():
             return True
     return False
-
+toGet = lector.readNonRepeated(dataset1)
 print(lector.read_headers(dataset1))
 print(toGet)
+print(len(toGet))
+
+climas = []
+
+for coordenadas in toGet:
+    peticion= climita.make_api_request_by_coordinates(coordenadas[0], coordenadas[1])
+    climas.append(peticion)
+    print(peticion)
+
 # if encontrar_ciudad('Canada', 'resources/city.list.json'):
 #     print('lo hallé')
 

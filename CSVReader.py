@@ -8,20 +8,19 @@ class Reader:
     def __init__(self):
         self.__dict = {}
 
-    def readNonRepeated(self, headers: list, fields: list, filename: str) -> list:
+    def readNonRepeated(self, filename: str) -> list:
         dicti = []
-        keywords = {}
-        for i, header in enumerate(headers):
-            keywords.setdefault(header, i)
         with open(filename) as File:
             reader = csv.reader(File, delimiter=',', quotechar='"')
             for id, row in enumerate(reader):
                 if id == 0:
                     continue
-                for i in range(len(fields)):
-                    if not (row[keywords[fields[i]]] in dicti):
-                        dicti.append(row[keywords[fields[i]]])
-        dicti.sort()
+                origin = (row[2], row[3])
+                destino = (row[4], row[5])
+                if not (origin in dicti):
+                    dicti.append(origin)
+                if not (destino in dicti):
+                    dicti.append(destino)
         return dicti
 
     def readFile(self, filename) -> list:
