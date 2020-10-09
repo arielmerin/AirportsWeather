@@ -8,18 +8,19 @@ class Reader:
     def __init__(self):
         self.__dict = {}
 
-    def readNonRepeated(self, filename) -> list:
-        dicti =[]
+    def readNonRepeated(self, filename: str) -> list:
+        dicti = []
         with open(filename) as File:
             reader = csv.reader(File, delimiter=',', quotechar='"')
             for id, row in enumerate(reader):
                 if id == 0:
                     continue
-                if not (row[0] in dicti):
-                    dicti.append(row[0])
-                if not (row[1] in dicti):
-                    dicti.append(row[1])
-        dicti.sort()
+                origin = (row[2], row[3])
+                destino = (row[4], row[5])
+                if not (origin in dicti):
+                    dicti.append(origin)
+                if not (destino in dicti):
+                    dicti.append(destino)
         return dicti
 
     def readFile(self, filename) -> list:
@@ -29,6 +30,11 @@ class Reader:
             for row in reader:
                 data.append(row)
         return data
+
+    def read_headers(self, filename):
+        with open(filename, 'r') as F:
+            lector = csv.DictReader(F)
+            return lector.fieldnames
 
     def read_airports_db(self, filename):
         return json.load(open(filename))
