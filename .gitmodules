@@ -1,3 +1,6 @@
 [submodule "Python-To-AQA-Pseudocode"]
 	path = Python-To-AQA-Pseudocode
 	url = git@github.com:gbaman/Python-To-AQA-Pseudocode.git
+[submodule "py2tex"]
+	path = py2tex
+	url = git@github.com:cairomassimo/py2tex.git
