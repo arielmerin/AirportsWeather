@@ -1,15 +1,13 @@
-import requests
-import json
-
 from cachetools import cached, TTLCache
 from datetime import datetime
-import tzlocal
+import tzlocal, time, requests
 """"
 Esta clase se encarga de hacer las peticiones al servidor para conocer el clima y manejar los posibles errores
 """
 
 
 class Weather:
+    counter = 1
     caching = TTLCache(maxsize=100, ttl=1200)
 
     def __init__(self):
@@ -19,18 +17,17 @@ class Weather:
         self.units = '&units=metric'
 
     @cached(caching)
-    def make_api_request_by_city_name(self, name: str) -> str:
-        respuesta = requests.get(self.address + 'q=' + name + self.apiID + self.idi + self.units).json()
-        return self.parse_weather_info(respuesta)
-
-    @cached(caching)
     def make_api_request_by_coordinates(self, lat, lon) -> str:
+        if self.counter > 59:
+            self.counter = 0
+            time.sleep(61)
+
         datos_obtenidos = requests.get(self.address +
                                        '&lat=' + str(lat) +
                                        '&lon=' + str(lon) +
                                        self.apiID + self.idi +
                                        self.units).json()
-
+        self.counter += 1
         return self.parse_weather_info(datos_obtenidos)
 
     def parse_weather_info(self, respuesta) -> str:
@@ -56,4 +53,3 @@ class Weather:
         local_timezone = tzlocal.get_localzone()
         local_time = datetime.fromtimestamp(unix_timestamp, local_timezone)
         return local_time.strftime("%-I:%M %p (%Z)")
-""" Manejar los errores de las peticiones """

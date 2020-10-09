@@ -10,7 +10,7 @@ lector = Reader()
 
 
 def run():
-    validate_file()
+    validate_file(sys.argv[1])
 
     """Aquí tenemos una lista de diccionarios con las peticiones de climas a resolver"""
     entradas = lector.read_csv_file(sys.argv[1])
@@ -21,28 +21,28 @@ def run():
         peticiones.setdefault(solicitud, peticion)
 
     for entrada in entradas:
-        print("CLIMA DE ORIGEN:\n"+ peticiones[(entrada['origin_latitude'], entrada['origin_longitude'])] +
-              "\nCLIMA DE DESTINO:\n" + peticiones[(entrada['destination_latitude'], entrada['destination_longitude'])] +"\n\n\n")
+        print("CLIMA DE ORIGEN ({}):\n".format(entrada['origin'])+ peticiones[(entrada['origin_latitude'], entrada['origin_longitude'])] +
+              "\nCLIMA DE DESTINO ({}):\n".format(entrada['destination']) + peticiones[(entrada['destination_latitude'], entrada['destination_longitude'])] +"\n\n\n")
 
 
 """=== Validación del archivo ==="""
 """Se encarga de verificar la consistencia del archivo enviado como parámetro, de otra forma termina el programa informándole a la usuaria qué error tuvo"""
 
 
-def validate_file():
+def validate_file(argumento):
     """Valida que le haya sido enviado uno y sólo un argumento"""
-    if len(sys.argv) != 2:
+    if len(argumento) != 2:
         print("Error\nDebe indicar la ruta a un archivo csv")
         exit(1)
 
     """Valida que el archivo pasado como argumento tenga extensión .csv"""
-    if (not re.match('.*\.csv', sys.argv[1])):
+    if (not re.match('.*\.csv', argumento[1])):
         print("Error, sólo admito archivos csv")
         exit(1)
 
     cabezera = ['origin', 'destination', 'origin_latitude', 'origin_longitude', 'destination_latitude',
                 'destination_longitude']
-    entrada_cabezera = lector.read_headers(sys.argv[1])
+    entrada_cabezera = lector.read_headers(argumento[1])
 
     """Revisa si el número de columnas es correcto"""
     if len(entrada_cabezera) != len(cabezera):
