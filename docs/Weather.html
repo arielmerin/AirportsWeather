@@ -20,10 +20,9 @@
       <p>&ldquo;</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">cachetools</span> <span class="kn">import</span> <span class="n">cached</span><span class="p">,</span> <span class="n">TTLCache</span>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cachetools</span> <span class="kn">import</span> <span class="n">cached</span><span class="p">,</span> <span class="n">TTLCache</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">tzlocal</span></pre></div>
+<span class="kn">import</span> <span class="nn">tzlocal</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">requests</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -33,45 +32,7 @@
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
       <p>class Weather:
-    caching = TTLCache(maxsize=100, ttl=1200)</p>
-<pre><code>def __init__(self):
-    self.address = 'http://api.openweathermap.org/data/2.5/weather?'
-    self.apiID = '&amp;APPID=4bc2be4c4fc75d1df5568e38fd570019'
-    self.idi = '&amp;lang=es'
-    self.units = '&amp;units=metric'
-
-@cached(caching)
-def make_api_request_by_city_name(self, name: str) -&gt; str:
-    respuesta = requests.get(self.address + 'q=' + name + self.apiID + self.idi + self.units).json()
-    return self.parse_weather_info(respuesta)
-
-@cached(caching)
-def make_api_request_by_coordinates(self, lat, lon) -&gt; str:
-    datos_obtenidos = requests.get(self.address +
-                                   '&amp;lat=' + str(lat) +
-                                   '&amp;lon=' + str(lon) +
-                                   self.apiID + self.idi +
-                                   self.units).json()
-
-    return self.parse_weather_info(datos_obtenidos)
-
-def parse_weather_info(self, respuesta) -&gt; str:
-    try:
-        descripcion = respuesta['weather'][0]['description']
-        humedad = respuesta['main']['humidity']
-        temperatura_actual = respuesta['main']['temp']
-        temperatura_minima = respuesta['main']['temp_min']
-        temperatura_maxima = respuesta['main']['temp_max']
-        amanecer = self.formato_de_horas(respuesta['sys']['sunrise'])
-        atardecer = self.formato_de_horas(respuesta['sys']['sunset'])
-    except KeyError:
-        return 'ERROR\nNo se pudo consultar la información\n'
-    return 'El pronóstico del clima es: {}, humedad: {}% ' \
-           '\nTemperatura actual: {}°C, mínima: {}°C, máxima: {}°C' \
-           '\nAmanecer: {} Puesta del sol: {}\n'.format(descripcion,humedad,
-                                                    temperatura_actual, temperatura_minima, temperatura_maxima,
-                                                    amanecer, atardecer)
-</code></pre>
+Variable de conteo para no exceder el número de peticiones permitido</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="n">Esta</span> <span class="n">clase</span> <span class="n">se</span> <span class="n">encarga</span> <span class="n">de</span> <span class="n">hacer</span> <span class="n">las</span> <span class="n">peticiones</span> <span class="n">al</span> <span class="n">servidor</span> <span class="n">para</span> <span class="n">conocer</span> <span class="n">el</span> <span class="n">clima</span> <span class="n">y</span> <span class="n">manejar</span> <span class="n">los</span> <span class="n">posibles</span> <span class="n">errores</span></pre></div>
@@ -83,14 +44,10 @@ def parse_weather_info(self, respuesta) -&gt; str:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      <p>Manejar los errores de las peticiones</p>
+      <p>Modelando el caché</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">formato_de_horas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unix_time</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">unix_timestamp</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">unix_time</span><span class="p">)</span>
-        <span class="n">local_timezone</span> <span class="o">=</span> <span class="n">tzlocal</span><span class="o">.</span><span class="n">get_localzone</span><span class="p">()</span>
-        <span class="n">local_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unix_timestamp</span><span class="p">,</span> <span class="n">local_timezone</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">local_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%-I:%M %p (%Z)&quot;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">counter</span> <span class="o">=</span> <span class="mi">1</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -99,10 +56,95 @@ def parse_weather_info(self, respuesta) -&gt; str:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
+      <p>Constructor con los valores que por defecto debe llevar cada peticion al servidor</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">caching</span> <span class="o">=</span> <span class="n">TTLCache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ttl</span><span class="o">=</span><span class="mi">1200</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;http://api.openweathermap.org/data/2.5/weather?&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">apiID</span> <span class="o">=</span> <span class="s1">&#39;&amp;APPID=4bc2be4c4fc75d1df5568e38fd570019&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idi</span> <span class="o">=</span> <span class="s1">&#39;&amp;lang=es&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;&amp;units=metric&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Da formato a la consulta elaborada y maneja el error en caso de estar presente</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="nd">@cached</span><span class="p">(</span><span class="n">caching</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">make_api_request_by_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">&gt;</span> <span class="mi">59</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">61</span><span class="p">)</span>
+
+        <span class="n">datos_obtenidos</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">+</span>
+                                       <span class="s1">&#39;&amp;lat=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="o">+</span>
+                                       <span class="s1">&#39;&amp;lon=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span> <span class="o">+</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">apiID</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">idi</span> <span class="o">+</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_weather_info</span><span class="p">(</span><span class="n">datos_obtenidos</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Asigna el formato de horas:minutos am/pm (tiempo local) a las horas de amanecer/atardecer</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">parse_weather_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">respuesta</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">descripcion</span> <span class="o">=</span> <span class="n">respuesta</span><span class="p">[</span><span class="s1">&#39;weather&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+            <span class="n">humedad</span> <span class="o">=</span> <span class="n">respuesta</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;humidity&#39;</span><span class="p">]</span>
+            <span class="n">temperatura_actual</span> <span class="o">=</span> <span class="n">respuesta</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span>
+            <span class="n">temperatura_minima</span> <span class="o">=</span> <span class="n">respuesta</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;temp_min&#39;</span><span class="p">]</span>
+            <span class="n">temperatura_maxima</span> <span class="o">=</span> <span class="n">respuesta</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">][</span><span class="s1">&#39;temp_max&#39;</span><span class="p">]</span>
+            <span class="n">amanecer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formato_de_horas</span><span class="p">(</span><span class="n">respuesta</span><span class="p">[</span><span class="s1">&#39;sys&#39;</span><span class="p">][</span><span class="s1">&#39;sunrise&#39;</span><span class="p">])</span>
+            <span class="n">atardecer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formato_de_horas</span><span class="p">(</span><span class="n">respuesta</span><span class="p">[</span><span class="s1">&#39;sys&#39;</span><span class="p">][</span><span class="s1">&#39;sunset&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;ERROR</span><span class="se">\n</span><span class="s1">No se pudo consultar la información</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;El pronóstico del clima es: </span><span class="si">{}</span><span class="s1">, humedad: </span><span class="si">{}</span><span class="s1">% &#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Temperatura actual: </span><span class="si">{}</span><span class="s1">°C, mínima: </span><span class="si">{}</span><span class="s1">°C, máxima: </span><span class="si">{}</span><span class="s1">°C&#39;</span> \
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Amanecer: </span><span class="si">{}</span><span class="s1"> Puesta del sol: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">descripcion</span><span class="p">,</span><span class="n">humedad</span><span class="p">,</span>
+                                                        <span class="n">temperatura_actual</span><span class="p">,</span> <span class="n">temperatura_minima</span><span class="p">,</span> <span class="n">temperatura_maxima</span><span class="p">,</span>
+                                                        <span class="n">amanecer</span><span class="p">,</span> <span class="n">atardecer</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">formato_de_horas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unix_time</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">unix_timestamp</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">unix_time</span><span class="p">)</span>
+        <span class="n">local_timezone</span> <span class="o">=</span> <span class="n">tzlocal</span><span class="o">.</span><span class="n">get_localzone</span><span class="p">()</span>
+        <span class="n">local_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unix_timestamp</span><span class="p">,</span> <span class="n">local_timezone</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">local_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%-I:%M %p (%Z)&quot;</span><span class="p">)</span>
+
+</pre></div>
     </div>
   </div>
   <div class='clearall'></div>

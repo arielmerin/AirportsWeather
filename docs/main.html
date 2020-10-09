@@ -17,7 +17,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      
+      <p>Aquí se concretarán las peticiones y formato de respuestas a nuestros clientes</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Weather</span> <span class="kn">import</span> <span class="n">Weather</span>
@@ -41,7 +41,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="n">validate_file</span><span class="p">()</span></pre></div>
+    <span class="n">validate_file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -50,11 +50,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      <h3><span id="validación-del-archivo" href="validación-del-archivo"> Validación del archivo </span></h3>
+      <p>Busca y selecciona las peticiones no repetidas para posteriormente enviarlas al servidor</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">entradas</span> <span class="o">=</span> <span class="n">lector</span><span class="o">.</span><span class="n">read_csv_file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">entradas</span><span class="p">)</span></pre></div>
+
+    <span class="n">solicitudes_no_repetidas</span> <span class="o">=</span> <span class="n">lector</span><span class="o">.</span><span class="n">read_no_repeated_coordinates</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -63,10 +64,13 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <p>Se encarga de verificar la consistencia del archivo enviado como parámetro, de otra forma termina el programa informándole a la usuaria qué error tuvo</p>
+      <p>Selecciona y asigna a cada linea del archivo original su solicitud completada</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="n">peticiones</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">solicitud</span> <span class="ow">in</span> <span class="n">solicitudes_no_repetidas</span><span class="p">:</span>
+        <span class="n">peticion</span> <span class="o">=</span> <span class="n">climita</span><span class="o">.</span><span class="n">make_api_request_by_coordinates</span><span class="p">(</span><span class="n">solicitud</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">solicitud</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">peticiones</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">solicitud</span><span class="p">,</span> <span class="n">peticion</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -75,10 +79,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      
+      <h3><span id="validación-del-archivo" href="validación-del-archivo"> Validación del archivo </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">for</span> <span class="n">entrada</span> <span class="ow">in</span> <span class="n">entradas</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CLIMA DE ORIGEN (</span><span class="si">{}</span><span class="s2">):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entrada</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">])</span><span class="o">+</span> <span class="n">peticiones</span><span class="p">[(</span><span class="n">entrada</span><span class="p">[</span><span class="s1">&#39;origin_latitude&#39;</span><span class="p">],</span> <span class="n">entrada</span><span class="p">[</span><span class="s1">&#39;origin_longitude&#39;</span><span class="p">])]</span> <span class="o">+</span>
+              <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">CLIMA DE DESTINO (</span><span class="si">{}</span><span class="s2">):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entrada</span><span class="p">[</span><span class="s1">&#39;destination&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">peticiones</span><span class="p">[(</span><span class="n">entrada</span><span class="p">[</span><span class="s1">&#39;destination_latitude&#39;</span><span class="p">],</span> <span class="n">entrada</span><span class="p">[</span><span class="s1">&#39;destination_longitude&#39;</span><span class="p">])]</span> <span class="o">+</span><span class="s2">&quot;</span><span class="se">\n\n\n</span><span class="s2">&quot;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -87,10 +93,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      <p>Valida que le haya sido enviado uno y sólo un argumento</p>
+      <p>Se encarga de verificar la consistencia del archivo enviado como parámetro, de otra forma termina el programa informándole a la usuaria qué error tuvo
+Valida que le haya sido enviado uno y sólo un argumento</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">validate_file</span><span class="p">():</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">validate_file</span><span class="p">(</span><span class="n">argumento</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -102,7 +109,7 @@
       <p>Valida que el archivo pasado como argumento tenga extensión .csv</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argumento</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error</span><span class="se">\n</span><span class="s2">Debe indicar la ruta a un archivo csv&quot;</span><span class="p">)</span>
         <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></pre></div>
     </div>
@@ -116,13 +123,13 @@
       <p>Revisa si el número de columnas es correcto</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;.*\.csv&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;.*\.csv&#39;</span><span class="p">,</span> <span class="n">argumento</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error, sólo admito archivos csv&quot;</span><span class="p">)</span>
         <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="n">cabezera</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">,</span> <span class="s1">&#39;destination&#39;</span><span class="p">,</span> <span class="s1">&#39;origin_latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;origin_longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;destination_latitude&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;destination_longitude&#39;</span><span class="p">]</span>
-    <span class="n">entrada_cabezera</span> <span class="o">=</span> <span class="n">lector</span><span class="o">.</span><span class="n">read_headers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></pre></div>
+    <span class="n">entrada_cabezera</span> <span class="o">=</span> <span class="n">lector</span><span class="o">.</span><span class="n">read_headers</span><span class="p">(</span><span class="n">argumento</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>

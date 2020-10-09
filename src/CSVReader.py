@@ -1,9 +1,10 @@
-import csv, json
+import csv
 """ === READER ==="""
-"""Se encarga de leer los archivos csv """
+"""Se encarga de leer los archivos csv y preprocesar en caso de ser necesario"""
 
 class Reader:
 
+    """Tiene asignada la creación de una lista con tuplas de coordenadas, esta lista no tiene elementos repetidos"""
     def read_no_repeated_coordinates(self, filename: str) -> list:
         dicti = []
         with open(filename) as File:
@@ -19,6 +20,7 @@ class Reader:
                     dicti.append(destino)
         return dicti
 
+    """ Se encarga de leer el archivo csv y regresar una lista con un diccionario de cada linea """
     def read_csv_file(self, filename) -> list:
         data = []
         try:
@@ -35,10 +37,9 @@ class Reader:
 
         return data
 
+    """Tiene la responsabilidad de leer la primera linea de un archivo y represar los valores separados por comas en una lista"""
     def read_headers(self, filename):
         with open(filename, 'r') as F:
             lector = csv.DictReader(F)
             return lector.fieldnames
 
-    def read_airports_db(self, filename):
-        return json.load(open(filename))
