@@ -10,7 +10,7 @@ lector = Reader()
 
 """Aquí se concretarán las peticiones y formato de respuestas a nuestros clientes"""
 def run():
-    validate_file(sys.argv[1])
+    validate_file(sys.argv)
 
     """Aquí tenemos una lista de diccionarios con las peticiones de climas a resolver"""
     entradas = lector.read_csv_file(sys.argv[1])
