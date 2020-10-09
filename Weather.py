@@ -1,6 +1,4 @@
-import csv
 import requests
-import amadeus
 from cachetools import cached, TTLCache
 from datetime import datetime
 import tzlocal
@@ -19,21 +17,21 @@ class Weather:
         self.units = '&units=metric'
 
     @cached(caching)
-    def make_api_request_by_city_name(self, name) -> str:
-        respuesta = requests.get(self.address + 'q=' + name + self.idi)
+    def make_api_request_by_city_name(self, name:str) -> str:
+        respuesta = requests.get(self.address + 'q=' + name + self.apiID + self.idi + self.units).json()
         return self.parse_weather_info(respuesta)
 
     @cached(caching)
-    def makeApiRequest_by_coordinates(self, lat, lon) -> str:
+    def make_api_request_by_coordinates(self, lat, lon) -> str:
         datos_obtenidos = requests.get(self.address +
                                        '&lat=' + str(lat) +
                                        '&lon=' + str(lon) +
                                        self.apiID + self.idi +
                                        self.units).json()
+
         return self.parse_weather_info(datos_obtenidos)
 
     def parse_weather_info(self, respuesta) -> str:
-        contenido = ''
         try:
             descripcion = respuesta['weather'][0]['description']
             humedad = respuesta['main']['humidity']
@@ -43,10 +41,10 @@ class Weather:
             amanecer = self.formato_de_horas(respuesta['sys']['sunrise'])
             atardecer = self.formato_de_horas(respuesta['sys']['sunset'])
         except KeyError:
-            print('hi')
-        return 'El pronóstico del clima es: {}, humedad: {} ' \
+            return 'ERROR\nNo se pudo consultar la información\n'
+        return 'El pronóstico del clima es: {}, humedad: {}% ' \
                '\nTemperatura actual: {}°C, mínima: {}°C, máxima: {}°C' \
-               '\nAmanecer: {} Puesta del sol: {}'.format(descripcion,humedad,
+               '\nAmanecer: {} Puesta del sol: {}\n'.format(descripcion,humedad,
                                                         temperatura_actual, temperatura_minima, temperatura_maxima,
                                                         amanecer, atardecer)
 
