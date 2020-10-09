@@ -1,0 +1,3 @@
+[submodule "Python-To-AQA-Pseudocode"]
+	path = Python-To-AQA-Pseudocode
+	url = git@github.com:gbaman/Python-To-AQA-Pseudocode.git
