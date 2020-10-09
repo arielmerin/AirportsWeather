@@ -1,5 +1,6 @@
 import csv, json
-""" """
+""" === READER ==="""
+"""Se encarga de leer los archivos csv """
 
 class Reader:
 
