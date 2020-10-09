@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>Weather.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>Weather.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>&ldquo;</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">cachetools</span> <span class="kn">import</span> <span class="n">cached</span><span class="p">,</span> <span class="n">TTLCache</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">tzlocal</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>class Weather:
+    caching = TTLCache(maxsize=100, ttl=1200)</p>
+<pre><code>def __init__(self):
+    self.address = 'http://api.openweathermap.org/data/2.5/weather?'
+    self.apiID = '&amp;APPID=4bc2be4c4fc75d1df5568e38fd570019'
+    self.idi = '&amp;lang=es'
+    self.units = '&amp;units=metric'
+
+@cached(caching)
+def make_api_request_by_city_name(self, name: str) -&gt; str:
+    respuesta = requests.get(self.address + 'q=' + name + self.apiID + self.idi + self.units).json()
+    return self.parse_weather_info(respuesta)
+
+@cached(caching)
+def make_api_request_by_coordinates(self, lat, lon) -&gt; str:
+    datos_obtenidos = requests.get(self.address +
+                                   '&amp;lat=' + str(lat) +
+                                   '&amp;lon=' + str(lon) +
+                                   self.apiID + self.idi +
+                                   self.units).json()
+
+    return self.parse_weather_info(datos_obtenidos)
+
+def parse_weather_info(self, respuesta) -&gt; str:
+    try:
+        descripcion = respuesta['weather'][0]['description']
+        humedad = respuesta['main']['humidity']
+        temperatura_actual = respuesta['main']['temp']
+        temperatura_minima = respuesta['main']['temp_min']
+        temperatura_maxima = respuesta['main']['temp_max']
+        amanecer = self.formato_de_horas(respuesta['sys']['sunrise'])
+        atardecer = self.formato_de_horas(respuesta['sys']['sunset'])
+    except KeyError:
+        return 'ERROR\nNo se pudo consultar la información\n'
+    return 'El pronóstico del clima es: {}, humedad: {}% ' \
+           '\nTemperatura actual: {}°C, mínima: {}°C, máxima: {}°C' \
+           '\nAmanecer: {} Puesta del sol: {}\n'.format(descripcion,humedad,
+                                                    temperatura_actual, temperatura_minima, temperatura_maxima,
+                                                    amanecer, atardecer)
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">Esta</span> <span class="n">clase</span> <span class="n">se</span> <span class="n">encarga</span> <span class="n">de</span> <span class="n">hacer</span> <span class="n">las</span> <span class="n">peticiones</span> <span class="n">al</span> <span class="n">servidor</span> <span class="n">para</span> <span class="n">conocer</span> <span class="n">el</span> <span class="n">clima</span> <span class="n">y</span> <span class="n">manejar</span> <span class="n">los</span> <span class="n">posibles</span> <span class="n">errores</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Manejar los errores de las peticiones</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">formato_de_horas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unix_time</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">unix_timestamp</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">unix_time</span><span class="p">)</span>
+        <span class="n">local_timezone</span> <span class="o">=</span> <span class="n">tzlocal</span><span class="o">.</span><span class="n">get_localzone</span><span class="p">()</span>
+        <span class="n">local_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unix_timestamp</span><span class="p">,</span> <span class="n">local_timezone</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">local_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%-I:%M %p (%Z)&quot;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

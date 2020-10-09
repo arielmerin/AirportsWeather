@@ -17,7 +17,7 @@ class Weather:
         self.units = '&units=metric'
 
     @cached(caching)
-    def make_api_request_by_city_name(self, name:str) -> str:
+    def make_api_request_by_city_name(self, name: str) -> str:
         respuesta = requests.get(self.address + 'q=' + name + self.apiID + self.idi + self.units).json()
         return self.parse_weather_info(respuesta)
 

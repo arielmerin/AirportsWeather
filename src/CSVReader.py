@@ -1,14 +1,10 @@
-import pandas as pd
-import csv
+import csv, re
 import json
-
+""" """
 
 class Reader:
 
-    def __init__(self):
-        self.__dict = {}
-
-    def readNonRepeated(self, filename: str) -> list:
+    def read_no_repeated_coordinates(self, filename: str) -> list:
         dicti = []
         with open(filename) as File:
             reader = csv.reader(File, delimiter=',', quotechar='"')
@@ -23,12 +19,20 @@ class Reader:
                     dicti.append(destino)
         return dicti
 
-    def readFile(self, filename) -> list:
+    def read_csv_file(self, filename) -> list:
         data = []
-        with open(filename) as File:
-            reader = csv.DictReader(File)
-            for row in reader:
-                data.append(row)
+        try:
+            with open(filename) as File:
+                reader = csv.DictReader(File)
+                for row in reader:
+                    data.append(row)
+        except FileNotFoundError:
+            print("Error, escribe una ruta válida")
+            exit(1)
+        except FileExistsError:
+            print("Error, archivo válido")
+            exit(1)
+
         return data
 
     def read_headers(self, filename):
