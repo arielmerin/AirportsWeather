@@ -403,4 +403,6 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+
 pdf/reporte.aux
+

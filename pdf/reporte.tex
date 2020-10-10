@@ -35,6 +35,9 @@ includefoot]{geometry}
 \vspace{-10pt}
 \rule{19cm}{0.3mm}
 
+\section*{Pseudocódigo}
+\subsection*{CSVReader}
+
 \begin{algorithm}
 	\SetKwData{Left}{left}\SetKwData{This}{this}
 	\SetKwData{Up}{up}
@@ -81,6 +84,27 @@ includefoot]{geometry}
 	}
 \caption{read\_csv\_file}
 \end{algorithm}
+
+\begin{algorithm}
+	\SetKwData{Left}{left}\SetKwData{This}{this}
+	\SetKwData{Up}{up}
+	\SetKwFunction{Union}{Union}
+	\SetKwFunction{FindCompress}{FindCompress}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	\SetKwProg{with}{with}{:}{}
+	\SetKwProg{catch}{catch}{:}{end}
+	\SetAlgorithmName{Función}{0}{list of algorithms name}
+	\Input{Nombre de un archivo (ruta)}
+	\Output{Lista de cabeceras}
+	\BlankLine
+	\with{}{
+		lector $ \gets $ \textbf{Leer primera linea}( ruta)
+	}
+\caption{read\_headers}
+\end{algorithm}
+\newpage
+\subsection*{main}
 
 \begin{algorithm}
 	\SetKwData{Left}{left}\SetKwData{This}{this}
