@@ -109,7 +109,33 @@ includefoot]{geometry}
 \begin{algorithm}
 	\SetKwData{Left}{left}\SetKwData{This}{this}
 	\SetKwData{Up}{up}
+	\SetKwFunction{longitud}{longitud}
+	\SetKwFunction{vf}{validate\_file}
+	\SetKwFunction{readHeaders}{read\_headers}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	\SetKwProg{with}{with}{:}{}
+	\SetKwProg{catch}{catch}{:}{end}
+	\SetAlgorithmName{Función}{0}{list of algorithms name}
+	\Input{Nombre de un archivo (ruta) pasados como argumento al programa}
+	\BlankLine
+	\If{longiutd del argumento no es 2}{
+	\textbf{muestra:} Error \\Debe indicar la ruta a un archivo csv\\ \textbf{salir}}
+	\If{no coincide la extensión .csv}{\textbf{muestra: } Error, sólo admito archivos csv \\\textbf{salir}}
+	cabezera $ \gets $ nombres de listas admitidas\\
+	entrada\_cabecera $ \gets $ \readHeaders{argumento[1]}{}\\
+	\If{\longitud{entrada\_cabecera} no es igual a \longitud{cabezera}}{
+	\textbf{muestra:} ERROR El archivo csv debe tener los siguientes encabezados: origin, destination, origin\_latitude, origin\_longitude, destination\_latitude, destination\_longitude \\
+	\textbf{salir}}
+	\ForEach{cabeza in entrada\_cabezera}{\If{cabeza no está en cabezera}{\textbf{muestra:} ERROR El archivo csv debe tener los siguientes encabezados: origin, destination, origin\_latitude, origin\_longitude, destination\_latitude, destination\_longitude\\ \textbf{salir} }}
+\caption{validate\_file}
+\end{algorithm}
+
+\begin{algorithm}
+	\SetKwData{Left}{left}\SetKwData{This}{this}
+	\SetKwData{Up}{up}
 	\SetKwFunction{Union}{Union}
+	\SetKwFunction{vf}{validate\_file}
 	\SetKwFunction{FindCompress}{FindCompress}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
@@ -117,11 +143,11 @@ includefoot]{geometry}
 	\SetKwProg{catch}{catch}{:}{end}
 	\SetAlgorithmName{Función}{0}{list of algorithms name}
 	\Input{Nombre de un archivo (ruta)}
-	\Output{Lista de cabeceras}
 	\BlankLine
+	\vf{argumentos al correr el programa}{}\;
 	\with{}{
 		lector $ \gets $ \textbf{Leer primera linea}( ruta)
 	}
-\caption{read\_headers}
+\caption{run}
 \end{algorithm}
 \end{document}

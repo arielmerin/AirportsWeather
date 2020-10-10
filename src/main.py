@@ -47,9 +47,9 @@ def validate_file(argumento):
 
     """Revisa si el número de columnas es correcto"""
     if len(entrada_cabezera) != len(cabezera):
-        print("ERROR\nEl archivo csv debe tener los siguientes encabezados:"
-              "\norigin, destination, origin_latitude, origin_longitude, destination_latitude, destination_longitude")
-        exit(1)
+            print("ERROR\nEl archivo csv debe tener los siguientes encabezados:"
+                  "\norigin, destination, origin_latitude, origin_longitude, destination_latitude, destination_longitude")
+            exit(1)
 
     """Valida que cada nombre de columna sea consistente con los solicitados"""
     for cabeza in entrada_cabezera:
