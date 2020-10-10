@@ -28,15 +28,14 @@ includefoot]{geometry}
 	Prof. José Galaviz Casas\\
 	Ayud. María Ximena Lezama \\
 	\textbf{Modelado y programación}\\[0.15cm]
-	Kevin Ariel Merino Peña\footnote{Número de cuenta 317031326} Armando Abraham Aquino Chapa\footnote{Número de cuenta n}
-	[0.12cm]
+	Kevin Ariel Merino Peña\footnote{Número de cuenta 317031326} Armando Abraham Aquino Chapa\footnote{Número de cuenta n}\\
 	\today
 \end{center}
 \vspace{-10pt}
 \rule{19cm}{0.3mm}
 
 \section*{Pseudocódigo}
-\subsection*{CSVReader}
+\subsection*{CSVReader.py}
 
 \begin{algorithm}
 	\SetKwData{Left}{left}\SetKwData{This}{this}
@@ -104,7 +103,7 @@ includefoot]{geometry}
 \caption{read\_headers}
 \end{algorithm}
 \newpage
-\subsection*{main}
+\subsection*{main.py}
 
 \begin{algorithm}
 	\SetKwData{Left}{left}\SetKwData{This}{this}
@@ -134,9 +133,12 @@ includefoot]{geometry}
 \begin{algorithm}
 	\SetKwData{Left}{left}\SetKwData{This}{this}
 	\SetKwData{Up}{up}
-	\SetKwFunction{Union}{Union}
+	\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
+	\SetKwFunction{format}{format}
+	\SetKwFunction{setdefault}{setdefault}
 	\SetKwFunction{vf}{validate\_file}
-	\SetKwFunction{FindCompress}{FindCompress}
+	\SetKwFunction{readcsvfile}{read\_csv\_file}
+	\SetKwFunction{readnorepeatedcoordinates}{read\_no\_repeated\_coordinates}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	\SetKwProg{with}{with}{:}{}
@@ -144,10 +146,81 @@ includefoot]{geometry}
 	\SetAlgorithmName{Función}{0}{list of algorithms name}
 	\Input{Nombre de un archivo (ruta)}
 	\BlankLine
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\vf{argumentos al correr el programa}{}\;
-	\with{}{
-		lector $ \gets $ \textbf{Leer primera linea}( ruta)
-	}
+	entradas $ \gets $ \readcsvfile{argumento al correr el programa}\\
+	%%%%%%%5
+	solicitudes\_no\_repetidas $ \gets $ \readnorepeatedcoordinates{argumentos al iniciar}\\
+	\ForEach{solicitud \textbf{en} solicitudes\_no\_repetidas}{
+	peticion $ \gets $ \makeapirequestbycoordinates{solicitud[0], solicitud[1]}\\
+	peticiones $ \gets $ \setdefault{solicitud, peticion}\\
+	}	
+	\ForEach{entrada \textbf{en} entradas}{\textbf{muesta: } Datos del clima ;) con formato bonito }
 \caption{run}
 \end{algorithm}
+
+\newpage
+\subsection*{Weather.py}
+\begin{algorithm}
+	\SetKwData{Left}{left}\SetKwData{This}{this}
+	\SetKwData{Up}{up}
+	\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
+	\SetKwFunction{get}{get}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	\SetKwProg{with}{with}{:}{}
+	\SetKwProg{catch}{catch}{:}{end}
+	\SetAlgorithmName{Función}{0}{list of algorithms name}
+	\Input{latitud, lontigud}
+	\Output{llamada a función parse\_weather\_info }
+	\BlankLine
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\If{contador $ > $ 59}{contador $ \gets $ 0\\ esperar 1 minuto para continuar}
+	\get{url + latitud y longitud dadas}{}\\
+	contador $ \gets $ contador + 1
+\caption{make\_api\_request\_by \_coordinates}
+\end{algorithm}
+
+\begin{algorithm}
+	\SetKwData{Left}{left}\SetKwData{This}{this}
+	\SetKwData{Up}{up}
+	\SetKwFunction{getLocalzone}{get\_localzone()}
+	\SetKwFunction{fromTimeStamp}{fromtimestamp}
+	\SetKwFunction{strftime}{strftime}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	\SetAlgorithmName{Función}{0}{list of algorithms name}
+	\Input{Número de fecha y hora (unix)}
+	\Output{cadena de texto con hora en formato 12 hrs}
+	\BlankLine
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\textbf{convierte\_fotante: } numero dado\\
+	local\_timezone $ \gets $ \getLocalzone{ }\\
+	local\_time $ \gets $ \fromTimeStamp{flotante, local\_timezone}\\
+	\textbf{regresar: } local\_time con formato de 12 horas, (CODIGO DEL TIEMPO)
+\caption{formato\_de\_horas}
+\end{algorithm}
+
+\begin{algorithm}
+	\SetKwData{Left}{left}\SetKwData{This}{this}
+	\SetKwData{Up}{up}
+	\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
+	\SetKwFunction{get}{get}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	\SetKwProg{try}{try}{:}{}
+	\SetKwProg{catch}{catch}{:}{end}
+	\SetAlgorithmName{Función}{0}{list of algorithms name}
+	\Input{respuesta en formato json}
+	\Output{llamada a función parse\_weather\_info }
+	\BlankLine
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\try{ }{
+	extraer información del archivo json con las llaves proporcionadas por la documentación de la API}
+	\catch{KeyError}{
+	\textbf{regresar: } Error, no se pudo consultar la información}
+	\textbf{regresar: } El pronóstico del clima es: X , humedad: x\\ \qquad \qquad \quad Temperatura actual: X$ ^\circ $C, mínima: X$ ^\circ $C, máxima: X$ ^\circ $C Amanecer: X Puesta del sol: X
+\caption{parse\_weather\_info}
+\end{algorithm}
+
 \end{document}
