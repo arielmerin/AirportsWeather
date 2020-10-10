@@ -223,4 +223,22 @@ includefoot]{geometry}
 \caption{parse\_weather\_info}
 \end{algorithm}
 
+\textbf{Análisis del problema y selección de la mejor alternativa. }\\
+Al ir analizando los diversos rubros que puede abarcar el problema, se determinó que lo más adecuado para resolverlo era obtener las siguientes clases:
+\begin{itemize}
+	\item \textbf{Clase Weather:}.
+	\begin{itemize}
+		\item Esta clase sería la encargada de realizar las distintas peticiones al servidor para obtener todos los datos correspondientes al clima.
+		\item Manejar los posibles errores, como el exceso de numero peticiones en un lapso de tiempo, para no obtener ningún problema con el servidor,y manejar los errores donde no es posible consultar la información
+		\item Otorgar de un formato correcto y legible a la salida del programa
+	\end{itemize}
+	\item \textbf{Clase CSVReader}
+	\begin{itemize}
+		\item Su función principal sería leer los archivos \textit{csv} otorgados por el aeropuerto de la Ciudad de México.  
+		\item Preprocesar cierto tipo de información que si es esencial de la que es redundante o no tiene utilidad para nuestros objetivos.
+		\item
+		
+	\end{itemize}
+\end{itemize}
+
 \end{document}
