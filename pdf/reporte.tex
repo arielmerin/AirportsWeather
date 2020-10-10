@@ -34,193 +34,202 @@ includefoot]{geometry}
 \vspace{-10pt}
 \rule{19cm}{0.3mm}
 
-\section*{Pseudocódigo}
-\subsection*{CSVReader.py}
+\section{Definición del problema}
+\section{Análisis del problema}
+\section{Selección de la mejor alternativa}
 
-\begin{algorithm}
-	\SetKwData{Left}{left}\SetKwData{This}{this}
-	\SetKwData{Up}{up}
-	\SetKwFunction{Union}{Union}
-	\SetKwFunction{FindCompress}{FindCompress}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	\SetAlgorithmName{Función}{0}{list of algorithms name}
-	\Input{Nombre de un archivo (ruta)}
-	\Output{Lista de coordenadas no repetidas}
-	\BlankLine
-	\While{Archivo(nombre dado) esté abierto}{
-	\ForEach{renglones $\leftarrow$ documento}{
-			\If{(latitud , longitud ) \textbf{no} están en  la lista}{
-			Agreagrlas}
+\section{Pseudocódigo}
+
+	\subsection*{CSVReader.py}
+	
+	\begin{algorithm}
+		\SetKwData{Left}{left}\SetKwData{This}{this}
+		\SetKwData{Up}{up}
+		\SetKwFunction{Union}{Union}
+		\SetKwFunction{FindCompress}{FindCompress}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		\SetAlgorithmName{Función}{0}{list of algorithms name}
+		\Input{Nombre de un archivo (ruta)}
+		\Output{Lista de coordenadas no repetidas}
+		\BlankLine
+		\While{Archivo(nombre dado) esté abierto}{
+		\ForEach{renglones $\leftarrow$ documento}{
+				\If{(latitud , longitud ) \textbf{no} están en  la lista}{
+				Agreagrlas}
+		}
 	}
-}
-\caption{read\_no\_repeated\_coordinates}
-\end{algorithm}
+	\caption{read\_no\_repeated\_coordinates}
+	\end{algorithm}
+	
+	\begin{algorithm}
+		\SetKwData{Left}{left}\SetKwData{This}{this}
+		\SetKwData{Up}{up}
+		\SetKwFunction{Union}{Union}
+		\SetKwFunction{FindCompress}{FindCompress}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		\SetKwProg{try}{try}{:}{}
+		\SetKwProg{catch}{catch}{:}{end}
+		\SetAlgorithmName{Función}{0}{list of algorithms name}
+		\Input{Nombre de un archivo (ruta)}
+		\Output{Lista de diccionarios con vuelos}
+		\BlankLine
+		\try{}{
+				Abrir ruta\\
+				\For{linea $ \gets $ archivo}{
+				linea $ \gets $ lista}
+		}
+		\catch{FileNotFoundError}{
+			\textbf{muesta}	 Error, escribe una ruta válida\\\textbf{exit}
+		}
+		\catch{FileExistsError}{
+		\textbf{muesta}	 Error, archivo válido\\\textbf{exit}
+		}
+	\caption{read\_csv\_file}
+	\end{algorithm}
+	
+	\begin{algorithm}
+		\SetKwData{Left}{left}\SetKwData{This}{this}
+		\SetKwData{Up}{up}
+		\SetKwFunction{Union}{Union}
+		\SetKwFunction{FindCompress}{FindCompress}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		\SetKwProg{with}{with}{:}{}
+		\SetKwProg{catch}{catch}{:}{end}
+		\SetAlgorithmName{Función}{0}{list of algorithms name}
+		\Input{Nombre de un archivo (ruta)}
+		\Output{Lista de cabeceras}
+		\BlankLine
+		\with{}{
+			lector $ \gets $ \textbf{Leer primera linea}( ruta)
+		}
+	\caption{read\_headers}
+	\end{algorithm}
+	\newpage
+	\subsection*{main.py}
+	
+	\begin{algorithm}
+		\SetKwData{Left}{left}\SetKwData{This}{this}
+		\SetKwData{Up}{up}
+		\SetKwFunction{longitud}{longitud}
+		\SetKwFunction{vf}{validate\_file}
+		\SetKwFunction{readHeaders}{read\_headers}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		\SetKwProg{with}{with}{:}{}
+		\SetKwProg{catch}{catch}{:}{end}
+		\SetAlgorithmName{Función}{0}{list of algorithms name}
+		\Input{Nombre de un archivo (ruta) pasados como argumento al programa}
+		\BlankLine
+		\If{longiutd del argumento no es 2}{
+		\textbf{muestra:} Error \\Debe indicar la ruta a un archivo csv\\ \textbf{salir}}
+		\If{no coincide la extensión .csv}{\textbf{muestra: } Error, sólo admito archivos csv \\\textbf{salir}}
+		cabezera $ \gets $ nombres de listas admitidas\\
+		entrada\_cabecera $ \gets $ \readHeaders{argumento[1]}{}\\
+		\If{\longitud{entrada\_cabecera} no es igual a \longitud{cabezera}}{
+		\textbf{muestra:} ERROR El archivo csv debe tener los siguientes encabezados: origin, destination, origin\_latitude, origin\_longitude, destination\_latitude, destination\_longitude \\
+		\textbf{salir}}
+		\ForEach{cabeza in entrada\_cabezera}{\If{cabeza no está en cabezera}{\textbf{muestra:} ERROR El archivo csv debe tener los siguientes encabezados: origin, destination, origin\_latitude, origin\_longitude, destination\_latitude, destination\_longitude\\ \textbf{salir} }}
+	\caption{validate\_file}
+	\end{algorithm}
+	
+	\begin{algorithm}
+		\SetKwData{Left}{left}\SetKwData{This}{this}
+		\SetKwData{Up}{up}
+		\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
+		\SetKwFunction{format}{format}
+		\SetKwFunction{setdefault}{setdefault}
+		\SetKwFunction{vf}{validate\_file}
+		\SetKwFunction{readcsvfile}{read\_csv\_file}
+		\SetKwFunction{readnorepeatedcoordinates}{read\_no\_repeated\_coordinates}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		\SetKwProg{with}{with}{:}{}
+		\SetKwProg{catch}{catch}{:}{end}
+		\SetAlgorithmName{Función}{0}{list of algorithms name}
+		\Input{Nombre de un archivo (ruta)}
+		\BlankLine
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\vf{argumentos al correr el programa}{}\;
+		entradas $ \gets $ \readcsvfile{argumento al correr el programa}\\
+		%%%%%%%5
+		solicitudes\_no\_repetidas $ \gets $ \readnorepeatedcoordinates{argumentos al iniciar}\\
+		\ForEach{solicitud \textbf{en} solicitudes\_no\_repetidas}{
+		peticion $ \gets $ \makeapirequestbycoordinates{solicitud[0], solicitud[1]}\\
+		peticiones $ \gets $ \setdefault{solicitud, peticion}\\
+		}	
+		\ForEach{entrada \textbf{en} entradas}{\textbf{muesta: } Datos del clima ;) con formato bonito }
+	\caption{run}
+	\end{algorithm}
+	
+	\newpage
+	\subsection*{Weather.py}
+	\begin{algorithm}
+		\SetKwData{Left}{left}\SetKwData{This}{this}
+		\SetKwData{Up}{up}
+		\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
+		\SetKwFunction{get}{get}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		\SetKwProg{with}{with}{:}{}
+		\SetKwProg{catch}{catch}{:}{end}
+		\SetAlgorithmName{Función}{0}{list of algorithms name}
+		\Input{latitud, lontigud}
+		\Output{llamada a función parse\_weather\_info }
+		\BlankLine
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\If{contador $ > $ 59}{contador $ \gets $ 0\\ esperar 1 minuto para continuar}
+		\get{url + latitud y longitud dadas}{}\\
+		contador $ \gets $ contador + 1
+	\caption{make\_api\_request\_by \_coordinates}
+	\end{algorithm}
+	
+	\begin{algorithm}
+		\SetKwData{Left}{left}\SetKwData{This}{this}
+		\SetKwData{Up}{up}
+		\SetKwFunction{getLocalzone}{get\_localzone()}
+		\SetKwFunction{fromTimeStamp}{fromtimestamp}
+		\SetKwFunction{strftime}{strftime}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		\SetAlgorithmName{Función}{0}{list of algorithms name}
+		\Input{Número de fecha y hora (unix)}
+		\Output{cadena de texto con hora en formato 12 hrs}
+		\BlankLine
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\textbf{convierte\_fotante: } numero dado\\
+		local\_timezone $ \gets $ \getLocalzone{ }\\
+		local\_time $ \gets $ \fromTimeStamp{flotante, local\_timezone}\\
+		\textbf{regresar: } local\_time con formato de 12 horas, (CODIGO DEL TIEMPO)
+	\caption{formato\_de\_horas}
+	\end{algorithm}
+	
+	\begin{algorithm}
+		\SetKwData{Left}{left}\SetKwData{This}{this}
+		\SetKwData{Up}{up}
+		\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
+		\SetKwFunction{get}{get}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		\SetKwProg{try}{try}{:}{}
+		\SetKwProg{catch}{catch}{:}{end}
+		\SetAlgorithmName{Función}{0}{list of algorithms name}
+		\Input{respuesta en formato json}
+		\Output{llamada a función parse\_weather\_info }
+		\BlankLine
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\try{ }{
+		extraer información del archivo json con las llaves proporcionadas por la documentación de la API}
+		\catch{KeyError}{
+		\textbf{regresar: } Error, no se pudo consultar la información}
+		\textbf{regresar: } El pronóstico del clima es: X , humedad: x\\ \qquad \qquad \quad Temperatura actual: X$ ^\circ $C, mínima: X$ ^\circ $C, máxima: X$ ^\circ $C Amanecer: X Puesta del sol: X
+	\caption{parse\_weather\_info}
+	\end{algorithm}
 
-\begin{algorithm}
-	\SetKwData{Left}{left}\SetKwData{This}{this}
-	\SetKwData{Up}{up}
-	\SetKwFunction{Union}{Union}
-	\SetKwFunction{FindCompress}{FindCompress}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	\SetKwProg{try}{try}{:}{}
-	\SetKwProg{catch}{catch}{:}{end}
-	\SetAlgorithmName{Función}{0}{list of algorithms name}
-	\Input{Nombre de un archivo (ruta)}
-	\Output{Lista de diccionarios con vuelos}
-	\BlankLine
-	\try{}{
-			Abrir ruta\\
-			\For{linea $ \gets $ archivo}{
-			linea $ \gets $ lista}
-	}
-	\catch{FileNotFoundError}{
-		\textbf{muesta}	 Error, escribe una ruta válida\\\textbf{exit}
-	}
-	\catch{FileExistsError}{
-	\textbf{muesta}	 Error, archivo válido\\\textbf{exit}
-	}
-\caption{read\_csv\_file}
-\end{algorithm}
 
-\begin{algorithm}
-	\SetKwData{Left}{left}\SetKwData{This}{this}
-	\SetKwData{Up}{up}
-	\SetKwFunction{Union}{Union}
-	\SetKwFunction{FindCompress}{FindCompress}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	\SetKwProg{with}{with}{:}{}
-	\SetKwProg{catch}{catch}{:}{end}
-	\SetAlgorithmName{Función}{0}{list of algorithms name}
-	\Input{Nombre de un archivo (ruta)}
-	\Output{Lista de cabeceras}
-	\BlankLine
-	\with{}{
-		lector $ \gets $ \textbf{Leer primera linea}( ruta)
-	}
-\caption{read\_headers}
-\end{algorithm}
-\newpage
-\subsection*{main.py}
 
-\begin{algorithm}
-	\SetKwData{Left}{left}\SetKwData{This}{this}
-	\SetKwData{Up}{up}
-	\SetKwFunction{longitud}{longitud}
-	\SetKwFunction{vf}{validate\_file}
-	\SetKwFunction{readHeaders}{read\_headers}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	\SetKwProg{with}{with}{:}{}
-	\SetKwProg{catch}{catch}{:}{end}
-	\SetAlgorithmName{Función}{0}{list of algorithms name}
-	\Input{Nombre de un archivo (ruta) pasados como argumento al programa}
-	\BlankLine
-	\If{longiutd del argumento no es 2}{
-	\textbf{muestra:} Error \\Debe indicar la ruta a un archivo csv\\ \textbf{salir}}
-	\If{no coincide la extensión .csv}{\textbf{muestra: } Error, sólo admito archivos csv \\\textbf{salir}}
-	cabezera $ \gets $ nombres de listas admitidas\\
-	entrada\_cabecera $ \gets $ \readHeaders{argumento[1]}{}\\
-	\If{\longitud{entrada\_cabecera} no es igual a \longitud{cabezera}}{
-	\textbf{muestra:} ERROR El archivo csv debe tener los siguientes encabezados: origin, destination, origin\_latitude, origin\_longitude, destination\_latitude, destination\_longitude \\
-	\textbf{salir}}
-	\ForEach{cabeza in entrada\_cabezera}{\If{cabeza no está en cabezera}{\textbf{muestra:} ERROR El archivo csv debe tener los siguientes encabezados: origin, destination, origin\_latitude, origin\_longitude, destination\_latitude, destination\_longitude\\ \textbf{salir} }}
-\caption{validate\_file}
-\end{algorithm}
 
-\begin{algorithm}
-	\SetKwData{Left}{left}\SetKwData{This}{this}
-	\SetKwData{Up}{up}
-	\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
-	\SetKwFunction{format}{format}
-	\SetKwFunction{setdefault}{setdefault}
-	\SetKwFunction{vf}{validate\_file}
-	\SetKwFunction{readcsvfile}{read\_csv\_file}
-	\SetKwFunction{readnorepeatedcoordinates}{read\_no\_repeated\_coordinates}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	\SetKwProg{with}{with}{:}{}
-	\SetKwProg{catch}{catch}{:}{end}
-	\SetAlgorithmName{Función}{0}{list of algorithms name}
-	\Input{Nombre de un archivo (ruta)}
-	\BlankLine
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\vf{argumentos al correr el programa}{}\;
-	entradas $ \gets $ \readcsvfile{argumento al correr el programa}\\
-	%%%%%%%5
-	solicitudes\_no\_repetidas $ \gets $ \readnorepeatedcoordinates{argumentos al iniciar}\\
-	\ForEach{solicitud \textbf{en} solicitudes\_no\_repetidas}{
-	peticion $ \gets $ \makeapirequestbycoordinates{solicitud[0], solicitud[1]}\\
-	peticiones $ \gets $ \setdefault{solicitud, peticion}\\
-	}	
-	\ForEach{entrada \textbf{en} entradas}{\textbf{muesta: } Datos del clima ;) con formato bonito }
-\caption{run}
-\end{algorithm}
-
-\newpage
-\subsection*{Weather.py}
-\begin{algorithm}
-	\SetKwData{Left}{left}\SetKwData{This}{this}
-	\SetKwData{Up}{up}
-	\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
-	\SetKwFunction{get}{get}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	\SetKwProg{with}{with}{:}{}
-	\SetKwProg{catch}{catch}{:}{end}
-	\SetAlgorithmName{Función}{0}{list of algorithms name}
-	\Input{latitud, lontigud}
-	\Output{llamada a función parse\_weather\_info }
-	\BlankLine
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\If{contador $ > $ 59}{contador $ \gets $ 0\\ esperar 1 minuto para continuar}
-	\get{url + latitud y longitud dadas}{}\\
-	contador $ \gets $ contador + 1
-\caption{make\_api\_request\_by \_coordinates}
-\end{algorithm}
-
-\begin{algorithm}
-	\SetKwData{Left}{left}\SetKwData{This}{this}
-	\SetKwData{Up}{up}
-	\SetKwFunction{getLocalzone}{get\_localzone()}
-	\SetKwFunction{fromTimeStamp}{fromtimestamp}
-	\SetKwFunction{strftime}{strftime}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	\SetAlgorithmName{Función}{0}{list of algorithms name}
-	\Input{Número de fecha y hora (unix)}
-	\Output{cadena de texto con hora en formato 12 hrs}
-	\BlankLine
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\textbf{convierte\_fotante: } numero dado\\
-	local\_timezone $ \gets $ \getLocalzone{ }\\
-	local\_time $ \gets $ \fromTimeStamp{flotante, local\_timezone}\\
-	\textbf{regresar: } local\_time con formato de 12 horas, (CODIGO DEL TIEMPO)
-\caption{formato\_de\_horas}
-\end{algorithm}
-
-\begin{algorithm}
-	\SetKwData{Left}{left}\SetKwData{This}{this}
-	\SetKwData{Up}{up}
-	\SetKwFunction{makeapirequestbycoordinates}{make\_api\_request\_by\_coordinates}
-	\SetKwFunction{get}{get}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	\SetKwProg{try}{try}{:}{}
-	\SetKwProg{catch}{catch}{:}{end}
-	\SetAlgorithmName{Función}{0}{list of algorithms name}
-	\Input{respuesta en formato json}
-	\Output{llamada a función parse\_weather\_info }
-	\BlankLine
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\try{ }{
-	extraer información del archivo json con las llaves proporcionadas por la documentación de la API}
-	\catch{KeyError}{
-	\textbf{regresar: } Error, no se pudo consultar la información}
-	\textbf{regresar: } El pronóstico del clima es: X , humedad: x\\ \qquad \qquad \quad Temperatura actual: X$ ^\circ $C, mínima: X$ ^\circ $C, máxima: X$ ^\circ $C Amanecer: X Puesta del sol: X
-\caption{parse\_weather\_info}
-\end{algorithm}
-
+\section{Mejora a futuro}
 \end{document}
