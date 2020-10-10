@@ -18,7 +18,7 @@ def run():
     solicitudes_no_repetidas = lector.read_no_repeated_coordinates(sys.argv[1])
     """Busca y selecciona las peticiones no repetidas para posteriormente enviarlas al servidor"""
     peticiones = {}
-    for solicitud in solicitudes_no_repetidas:
+    for soliczitud in solicitudes_no_repetidas:
         peticion = climita.make_api_request_by_coordinates(solicitud[0], solicitud[1])
         peticiones.setdefault(solicitud, peticion)
 

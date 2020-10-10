@@ -10,8 +10,8 @@ includefoot]{geometry}
 \usepackage{dsfont}
 \usepackage{mathtools}
 \usepackage{graphicx}
-
-
+\usepackage{algorithmic}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
 \begin{document}
 
 \setlength{\unitlength}{1cm}
@@ -35,4 +35,69 @@ includefoot]{geometry}
 \vspace{-10pt}
 \rule{19cm}{0.3mm}
 
+\begin{algorithm}
+	\SetKwData{Left}{left}\SetKwData{This}{this}
+	\SetKwData{Up}{up}
+	\SetKwFunction{Union}{Union}
+	\SetKwFunction{FindCompress}{FindCompress}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	\SetAlgorithmName{Función}{0}{list of algorithms name}
+	\Input{Nombre de un archivo (ruta)}
+	\Output{Lista de coordenadas no repetidas}
+	\BlankLine
+	\While{Archivo(nombre dado) esté abierto}{
+	\ForEach{renglones $\leftarrow$ documento}{
+			\If{(latitud , longitud ) \textbf{no} están en  la lista}{
+			Agreagrlas}
+	}
+}
+\caption{read\_no\_repeated\_coordinates}
+\end{algorithm}
+
+\begin{algorithm}
+	\SetKwData{Left}{left}\SetKwData{This}{this}
+	\SetKwData{Up}{up}
+	\SetKwFunction{Union}{Union}
+	\SetKwFunction{FindCompress}{FindCompress}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	\SetKwProg{try}{try}{:}{}
+	\SetKwProg{catch}{catch}{:}{end}
+	\SetAlgorithmName{Función}{0}{list of algorithms name}
+	\Input{Nombre de un archivo (ruta)}
+	\Output{Lista de diccionarios con vuelos}
+	\BlankLine
+	\try{}{
+			Abrir ruta\\
+			\For{linea $ \gets $ archivo}{
+			linea $ \gets $ lista}
+	}
+	\catch{FileNotFoundError}{
+		\textbf{muesta}	 Error, escribe una ruta válida\\\textbf{exit}
+	}
+	\catch{FileExistsError}{
+	\textbf{muesta}	 Error, archivo válido\\\textbf{exit}
+	}
+\caption{read\_csv\_file}
+\end{algorithm}
+
+\begin{algorithm}
+	\SetKwData{Left}{left}\SetKwData{This}{this}
+	\SetKwData{Up}{up}
+	\SetKwFunction{Union}{Union}
+	\SetKwFunction{FindCompress}{FindCompress}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	\SetKwProg{with}{with}{:}{}
+	\SetKwProg{catch}{catch}{:}{end}
+	\SetAlgorithmName{Función}{0}{list of algorithms name}
+	\Input{Nombre de un archivo (ruta)}
+	\Output{Lista de cabeceras}
+	\BlankLine
+	\with{}{
+		lector $ \gets $ \textbf{Leer primera linea}( ruta)
+	}
+\caption{read\_headers}
+\end{algorithm}
 \end{document}
