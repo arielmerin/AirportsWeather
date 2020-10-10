@@ -35,26 +35,32 @@ includefoot]{geometry}
 \rule{19cm}{0.3mm}
 
 \section{Definición del problema}
-\section{Análisis del problema}
-	\textbf{Análisis del problema y selección de la mejor alternativa. }
-	Al ir analizando los diversos rubros que puede abarcar el problema, se determinó que lo más adecuado para resolverlo era obtener las siguientes clases:
+\section{Análisis del problema y selección de la mejor alternativa. }
+Para comenzar con el análisis del problema,uno de los aspectos fundamentales fue hacernos preguntas del tipo ¿qué es lo que queremos obtener?, ¿cuáles son los datos que tenemos para obtenerlo?, ¿qué hace que el resultado obtenido resuelva el problema?. También, cabe destacar que al analizar el problema, uno de nuestros "métodos" fue descomponerlo en subproblemas más simples para así ir solucionando cada subproblema a la vez y obtener una solución óptima. Por lo tanto, se determinó que lo más adecuado para resolverlo era obtener las siguientes clases:
+\begin{itemize}
+	\item \textbf{Clase Weather:}.
 	\begin{itemize}
-		\item \textbf{Clase Weather:}.
-		\begin{itemize}
-			\item Esta clase sería la encargada de realizar las distintas peticiones al servidor para obtener todos los datos correspondientes al clima.
-			\item Manejar los posibles errores, como el exceso de numero peticiones en un lapso de tiempo, para no obtener ningún problema con el servidor,y manejar los errores donde no es posible consultar la información
-			\item Otorgar de un formato correcto y legible a la salida del programa
-		\end{itemize}
-		\item \textbf{Clase CSVReader}
-		\begin{itemize}
-			\item Su función principal sería leer los archivos \textit{csv} otorgados por el aeropuerto de la Ciudad de México.  
-			\item Preprocesar cierto tipo de información que si es esencial de la que es redundante o no tiene utilidad para nuestros objetivos.
-			\item
-			
-		\end{itemize}
+		\item Esta clase sería la encargada de realizar las distintas peticiones al servidor para obtener todos los datos correspondientes al clima. Aquí también modelaríamos nuestro caché.
+		\item Manejar los posibles errores, como el exceso de numero peticiones en un lapso de tiempo, para no obtener ningún problema con el servidor,y manejar los errores donde no es posible consultar la información
+		\item Otorgar de un formato correcto y legible a la salida del programa
 	\end{itemize}
-	
-\section{Selección de la mejor alternativa}
+	\item \textbf{Clase CSVReader}
+	\begin{itemize}
+		\item Su función principal sería leer los archivos \textit{csv} otorgados por el aeropuerto de la Ciudad de México.  
+		\item Preprocesar cierto tipo de información que si es esencial de la que es redundante o no tiene utilidad para nuestros objetivos.
+		\item Ordenar información (de los archivos. \textit{csv} que se nos fueron proveídos) para que de esta forma no obtengamos elementos repetidos, y así evitar realizar peticiones de más.
+	\end{itemize}
+	\item \textbf{Clase main.}
+	\begin{itemize}
+		\item Cómo su nombre lo indica, en esta clase se concretarían las peticiones y formatos de respuestas a nuestros clientes.
+		\item Procesar las peticiones no repetidas para posteriormente enviarlas al servidor.
+		\item Asimismo, verificaríamos la consistencia del archivo enviado como parámetro para evitar cualquier tipo de inconveniente y que nuestro programa no colapse.
+	\end{itemize}
+\end{itemize}
+Una vez visto el análisis del problema, respondamos la siguiente pregunta: ¿La forma en qué hemos modelado el problema es la mejor alternativa?.\\
+Si, es una de las mejores alternativas, ya que pueden asegurar que el problema se resuelve de una forma: eficiente, es decir, sin consumir la mínima cantidad de recursos, pero tampoco abusando de ellos. El programa es amigable con el usuario, porque a pesar de no ser interactivo, si tiene un muy buen formato el cual permite que el contenido sea legible y la información esté ordenada correctamente. También, el programa es tolerable a fallos. Aunque no es totalmente robusto, si tomamos en cuenta los errores más comunes y naturales a la hora de manejar el programa. \\
+Más adelante mencionaremos cuales son los planes a futuro que tenemos para este proyecto, ya sea para una mejora o para mantenimiento.\\
+
 \newpage
 \section{Pseudocódigo}
 
@@ -245,9 +251,6 @@ includefoot]{geometry}
 		\textbf{regresar: } El pronóstico del clima es: X , humedad: x\\ \qquad \qquad \quad Temperatura actual: X$ ^\circ $C, mínima: X$ ^\circ $C, máxima: X$ ^\circ $C Amanecer: X Puesta del sol: X
 	\caption{parse\_weather\_info}
 	\end{algorithm}
-
-
-
 
 \section{Mejora a futuro}
 Podemos hablar de varias mejoras a este proyecto, pues está elaborado justo para ofrecer posteriormente nuevas funcionalidaddes a la clienta, entre ellas podemos enunciar
