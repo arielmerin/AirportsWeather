@@ -36,14 +36,43 @@ includefoot]{geometry}
 
 \section{Definición del problema}
 A continuación iremos mostrando cual fue el proceso para el modelado del problema, además de que se mostrará un pseudocódigo del mismo, así como los planes a futuro que tenemos para él.\\
-Antes de analizar el problema, veamos una de las cuestiones más importantes, como es: ¿en qué lenguaje de programación nos conviene más hacer nuestro proyecto? Nuestra respuesta ante ésta pregunta es Python, y lo hemos elegido debido a que de manera muy breve y conscisa se pueden hacer proyectos tan sólidos y robustos como sea necesrio. Personalmente hemos tomado la iniciativa de usar este lenguaje porque muchos de los consejos de profesoras, profesores y colegas de la carrera es aprender este lenguaje de programación porque buena parte de la industria trabaja con él.\\
-
-En el espacio de la definición del problema, encontramos las intrucciones donde se nos pide que, dado un archivo con datos de vuelos de salida y llegrada, nosotros mostremos el clima pronosticado para ambas locaciones.
-
-
-
+Un aspecto indispensable antes de comenzar a programar es entender el problema a través de todos los datos que se nos fueron proporcionados. Esto lo logramos gracias a las siguientes preguntas:
+\begin{itemize}
+	\item ¿Qué es lo que queremos obtener?: Tenemos que obtener el clima de la ciudad de salida y la ciudad de llegada dado ciertos tickets de avión que nos puso a disposición el aeropuerto de la Ciudad de México.
+	\item  ¿Qué datos tenemos para obtenerlo?: Cómo se mencionó anteriormente, tenemos una cantidad fija de tickets, todos ellos agrupados en dos archivos \textit{.csv} (diferentes entre sí) que contienen información que puede ser de utilidad e información que aparentemente puede estar de más.
+	\item ¿Los datos son suficientes? Para el objetivo del proyecto, que es solamente obtener el clima, si son suficientes ya que en los archivos \textit{.csv} tenemos una diversidad de datos, como coordenadas de origen y destino, fechas de llegada y salida de los vuelos, etc.
+	\item ¿Qué operaciones o construcciones se deben obtener para llegar a la solución?: Esto lo veremos a profundidad en la sección \textit{Análisis del problema} y \textit{Pseudocódigo}
+\end{itemize}
+Antes de analizar el problema, veamos una de las cuestiones más importantes, como es: ¿en qué lenguaje de programación nos conviene más hacer nuestro proyecto? Nuestra respuesta ante esta pregunta es Python, y lo hemos elegido debido a que de manera muy breve y conscisa se pueden hacer proyectos tan sólidos y robustos como sea necesrio. Personalmente hemos tomado la iniciativa de usar este lenguaje porque muchos de los consejos de profesoras, profesores y colegas de la carrera es aprender este lenguaje de programación porque buena parte de la industria trabaja con él.
+%En el espacio de la definición del problema, encontramos las intrucciones donde se nos pide que, dado un archivo con datos de vuelos de salida y llegrada, nosotros mostremos el clima pronosticado para ambas locaciones.
 \section{Análisis del problema y selección de la mejor alternativa. }
-Para comenzar con el análisis del problema,uno de los aspectos fundamentales fue hacernos preguntas del tipo ¿qué es lo que queremos obtener?, ¿cuáles son los datos que tenemos para obtenerlo?, ¿qué hace que el resultado obtenido resuelva el problema?. También, cabe destacar que al analizar el problema, uno de nuestros "métodos" fue descomponerlo en subproblemas más simples para así ir solucionando cada subproblema a la vez y obtener una solución óptima. Por lo tanto, se determinó que lo más adecuado para resolverlo era obtener las siguientes clases:
+Una vez definido el proyecto, veamos como fue nuestro proceso para el análisis del problema. Para ello podemos dividir el análisis en los siguientes subproblemas/aspectos:
+\begin{enumerate}
+	\item \textit{Web Services: }
+	\begin{itemize}
+		\item Notemos que para saber el clima de los vuelos que se nos fueron proporcionados, tendríamos que usar \textit{Web Services} para poder consultar el clima. Nuestra elección fue: \textit{OpenWeatherMap}.
+		\item 	Al no tener conocimientos sobre \textit{OpenWeatherMap} tuvimos que documentarnos para aprender como realizar peticiones y obtener la información necesaria.
+		\item Tendríamos que solventar errores con respecto al exceso de peticiones por un cierto tiempo para no tener ningún tipo de problema con la API
+		\item Relacionar la información que tenemos disponible en los archivos \textit{.csv} como las coordenadas, nombre de las ciudades,etc; con la API, para así obtener el clima.
+	\end{itemize}
+	\item Archivos \textit{.csv}
+	\begin{itemize}
+		\item Leer estos archivos para poder solicitar la peticiones a la API.
+		\item Descartar la información redundante que no es de utilidad para nuestro ojetivo. Un ejemplo muy claro de esto son las fechas de llegada y hora de salida de los vuelos en el archivo \textit{datset2.csv}.
+		\item Inferir información que no se encuentra en los archivos. Como el lugar de salida en \textit{dataset2.csv}, dónde sólo tenemos el lugar de llegada, pero podemos inferir que la salida es en el aeropuerto de la Ciudad de México, ya que fueron quienes nos contrataron.
+		\item Para generar un programa eficiente, nos percatamos que hay muchos vuelos que se repiten, por lo que tendríamos que preprocesar la información de estos vuelos repetidos, es decir, que no haya información repetida.\\ De esta forma también podríamos ahorrarnos mucho tiempo de ejecución, ya que en \textit{OpenWeatherMap} sólo podemos realizar un cierto número de peticiones por minuto.
+	\end{itemize}
+	\item Manejar errores generales, y otros aspectos particulares:
+	\begin{itemize}
+		\item Modelar un caché que nos permitiría agilizar nuestro problema y así no realizar peticiones redundantes.
+		\item Personalmente, al no tener un conocimiento avanzado en Python, tener que informarme sobre sintaxis, diccionarios y otros aspectos relacionados a este lenguaje de programación. 
+		\item Conocer que estructuras de datos nos conviene más utilizar.
+		\item Dar un formato correcto y legible a la salida del programa.
+		\item Verificar la consistencia de los archivos que nos dan como parámetro, para así poder validarlos si cumplen con la información necesaria, o rechazarlos y mandar una advertencia de que no cumplen con nuestros requerimientos.
+	\end{itemize}
+	
+\end{enumerate}
+Una vez visto como analizamos el problema principal en subproblemas, hemos determinado que lo más adecuado para resolverlo era obtener las siguientes clases:
 \begin{itemize}
 	\item \textbf{Clase Weather:}.
 	\begin{itemize}
@@ -64,7 +93,9 @@ Para comenzar con el análisis del problema,uno de los aspectos fundamentales fu
 		\item Asimismo, verificaríamos la consistencia del archivo enviado como parámetro para evitar cualquier tipo de inconveniente y que nuestro programa no colapse.
 	\end{itemize}
 \end{itemize}
-Una vez visto el análisis del problema, respondamos la siguiente pregunta: ¿La forma en qué hemos modelado el problema es la mejor alternativa?.\\
+%%--AQUI AMIWO. QUÉ MAS LE PODEMOS PONER/QUITAR Y SI ESTA BIEN PONERLO EN ESTA SECCION O LO PONEMOS EN OTRA
+Antes de continuar con la selección de la mejor alternativa, hagamos un pequeño paréntesis para explicar porque a la hora de ejecutar el programa, el archivo \textit{dataset2.csv} no puede ser leído. Si prestamos atención en este archivo, nos daremos cuenta que no tiene los argumentos para poder ser ejecutado, es decir no tiene origen, destino, coordenadas. Adoptamos esa postura debido a que el \textbf{nombre de las ciudades no puede estar escrito correctamente, y por lo tanto la API lo rechazaría a la hora de hacer la petición, y en algunos otros casos, no tenemos una ciudad como tal, sino un país, por lo cuál causaría conflicto obtener el clima de un país. } \\
+Por último respondamos la siguiente pregunta: ¿La forma en qué hemos modelado el problema es la mejor alternativa?.\\
 Si, es una de las mejores alternativas, ya que pueden asegurar que el problema se resuelve de una forma: eficiente, es decir, sin consumir la mínima cantidad de recursos, pero tampoco abusando de ellos. El programa es amigable con el usuario, porque a pesar de no ser interactivo, si tiene un muy buen formato el cual permite que el contenido sea legible y la información esté ordenada correctamente. También, el programa es tolerable a fallos. Aunque no es totalmente robusto, si tomamos en cuenta los errores más comunes y naturales a la hora de manejar el programa. \\
 Más adelante mencionaremos cuales son los planes a futuro que tenemos para este proyecto, ya sea para una mejora o para mantenimiento.\\
 
