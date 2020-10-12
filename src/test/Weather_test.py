@@ -1,6 +1,4 @@
 import datetime
-import json
-import time
 import unittest
 
 from Weather import Weather
@@ -36,13 +34,14 @@ class Weather_test(unittest.TestCase):
         instante_final = datetime.datetime.now()
         duración = instante_final - instante_inicial
         self.assertTrue(duración.seconds >= 59)
-
+    """ Verifica que dado una hora en especial, el formato de regreso sea el adecuado  """
     def test_parse_time(self):
         hora = 1602462419
         formato_correcto = "7:26 PM (CDT)"
         self.assertEqual(formato_correcto, Weather.formato_de_horas(self, hora))
         self.assertEqual(formato_correcto, Weather.formato_de_horas(self, hora))
 
+    """ Se encarga de checar que cuando un json con formano no valido es enviado como argumento al método éste no colapsa si no que regresa un mensaje amable de error"""
     def test_parse_info(self):
         example_json = {"cod":"404", "message":"city not found"}
         error_msj = 'ERROR\nNo se pudo consultar la información\n'
