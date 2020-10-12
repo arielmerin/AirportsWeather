@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>main.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>main.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Aquí se concretarán las peticiones y formato de respuestas a nuestros clientes</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Weather</span> <span class="kn">import</span> <span class="n">Weather</span>
+<span class="kn">from</span> <span class="nn">CSVReader</span> <span class="kn">import</span> <span class="n">Reader</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">re</span>
+
+<span class="n">dataset1</span> <span class="o">=</span> <span class="s2">&quot;resources/dataset1.csv&quot;</span>
+<span class="n">dataset2</span> <span class="o">=</span> <span class="s2">&quot;resources/dataset2.csv&quot;</span>
+<span class="n">db_ciudades</span> <span class="o">=</span> <span class="s2">&quot;resources/city.list.json&quot;</span>
+<span class="n">climita</span> <span class="o">=</span> <span class="n">Weather</span><span class="p">()</span>
+<span class="n">lector</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Aquí tenemos una lista de diccionarios con las peticiones de climas a resolver</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="n">validate_file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Busca y selecciona las peticiones no repetidas para posteriormente enviarlas al servidor</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">entradas</span> <span class="o">=</span> <span class="n">lector</span><span class="o">.</span><span class="n">read_csv_file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">solicitudes_no_repetidas</span> <span class="o">=</span> <span class="n">lector</span><span class="o">.</span><span class="n">read_no_repeated_coordinates</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">solicitudes_no_repetidasz</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Selecciona y asigna a cada linea del archivo original su solicitud completada</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">peticiones</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">solicitud</span> <span class="ow">in</span> <span class="n">solicitudes_no_repetidas</span><span class="p">:</span>
+        <span class="n">peticion</span> <span class="o">=</span> <span class="n">climita</span><span class="o">.</span><span class="n">make_api_request_by_coordinates</span><span class="p">(</span><span class="n">solicitud</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">solicitud</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">peticiones</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">solicitud</span><span class="p">,</span> <span class="n">peticion</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>for entrada in entradas:
+    print(&ldquo;CLIMA DE ORIGEN ({}):\n&rdquo;.format(entrada[&lsquo;origin&rsquo;])+ peticiones[(entrada[&lsquo;origin_latitude&rsquo;], entrada[&lsquo;origin_longitude&rsquo;])] +
+          &ldquo;\nCLIMA DE DESTINO ({}):\n&rdquo;.format(entrada[&lsquo;destination&rsquo;]) + peticiones[(entrada[&lsquo;destination_latitude&rsquo;], entrada[&lsquo;destination_longitude&rsquo;])] +&rdquo;\n\n\n&rdquo;)
+=== Validación del archivo ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Se encarga de verificar la consistencia del archivo enviado como parámetro, de otra forma termina el programa informándole a la usuaria qué error tuvo
+Valida que le haya sido enviado uno y sólo un argumento</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">validate_file</span><span class="p">(</span><span class="n">argumento</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Valida que el archivo pasado como argumento tenga extensión .csv</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argumento</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error</span><span class="se">\n</span><span class="s2">Debe indicar la ruta a un archivo csv&quot;</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Revisa si el número de columnas es correcto</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;.*\.csv&#39;</span><span class="p">,</span> <span class="n">argumento</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error, sólo admito archivos csv&quot;</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">cabezera</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">,</span> <span class="s1">&#39;destination&#39;</span><span class="p">,</span> <span class="s1">&#39;origin_latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;origin_longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;destination_latitude&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;destination_longitude&#39;</span><span class="p">]</span>
+    <span class="n">entrada_cabezera</span> <span class="o">=</span> <span class="n">lector</span><span class="o">.</span><span class="n">read_headers</span><span class="p">(</span><span class="n">argumento</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Valida que cada nombre de columna sea consistente con los solicitados</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entrada_cabezera</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cabezera</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR</span><span class="se">\n</span><span class="s2">El archivo csv debe tener los siguientes encabezados:&quot;</span>
+                  <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">origin, destination, origin_latitude, origin_longitude, destination_latitude, destination_longitude&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">for</span> <span class="n">cabeza</span> <span class="ow">in</span> <span class="n">entrada_cabezera</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cabeza</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cabezera</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR</span><span class="se">\n</span><span class="s2">El archivo csv debe tener los siguientes encabezados:&quot;</span>
+                  <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">origin, destination, origin_latitude, origin_longitude, destination_latitude, destination_longitude&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

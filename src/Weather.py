@@ -1,4 +1,4 @@
-from cachetools import cached, TTLCache
+from functools import lru_cache
 from datetime import datetime
 import tzlocal, time, requests
 """"
@@ -6,10 +6,7 @@ Esta clase se encarga de hacer las peticiones al servidor para conocer el clima 
 """
 class Weather:
     """Variable de conteo para no exceder el número de peticiones permitido"""
-    counter = 1
-
-    """Modelando el caché"""
-    caching = TTLCache(maxsize=100, ttl=1200)
+    __counter = 1
 
     """Constructor con los valores que por defecto debe llevar cada peticion al servidor"""
     def __init__(self):
@@ -18,10 +15,10 @@ class Weather:
         self.idi = '&lang=es'
         self.units = '&units=metric'
 
-    @cached(caching)
+    @lru_cache(maxsize=256)
     def make_api_request_by_coordinates(self, lat, lon) -> str:
-        if self.counter > 59:
-            self.counter = 0
+        if self.__counter > 59:
+            self.__counter = 0
             time.sleep(61)
 
         datos_obtenidos = requests.get(self.address +
@@ -29,7 +26,7 @@ class Weather:
                                        '&lon=' + str(lon) +
                                        self.apiID + self.idi +
                                        self.units).json()
-        self.counter += 1
+        self.__counter += 1
         return self.parse_weather_info(datos_obtenidos)
 
     """Da formato a la consulta elaborada y maneja el error en caso de estar presente"""
