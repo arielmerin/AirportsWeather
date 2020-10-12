@@ -2,9 +2,6 @@ from Weather import Weather
 from CSVReader import Reader
 import sys, re
 
-dataset1 = "resources/dataset1.csv"
-dataset2 = "resources/dataset2.csv"
-db_ciudades = "resources/city.list.json"
 climita = Weather()
 lector = Reader()
 

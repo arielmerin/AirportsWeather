@@ -20,7 +20,7 @@
       <p>&ldquo;</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cachetools</span> <span class="kn">import</span> <span class="n">cached</span><span class="p">,</span> <span class="n">TTLCache</span>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">tzlocal</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">requests</span></pre></div>
     </div>
@@ -44,10 +44,10 @@ Variable de conteo para no exceder el número de peticiones permitido</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      <p>Modelando el caché</p>
+      <p>Constructor con los valores que por defecto debe llevar cada peticion al servidor</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">counter</span> <span class="o">=</span> <span class="mi">1</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">__counter</span> <span class="o">=</span> <span class="mi">1</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -55,18 +55,6 @@ Variable de conteo para no exceder el número de peticiones permitido</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
-      </div>
-      <p>Constructor con los valores que por defecto debe llevar cada peticion al servidor</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">caching</span> <span class="o">=</span> <span class="n">TTLCache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ttl</span><span class="o">=</span><span class="mi">1200</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-4'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-4'>#</a>
       </div>
       
     </div>
@@ -79,18 +67,18 @@ Variable de conteo para no exceder el número de peticiones permitido</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-5'>
+  <div class='section' id='section-4'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
+        <a class='octothorpe' href='#section-4'>#</a>
       </div>
       <p>Da formato a la consulta elaborada y maneja el error en caso de estar presente</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="nd">@cached</span><span class="p">(</span><span class="n">caching</span><span class="p">)</span>
+      <div class="highlight"><pre>    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">make_api_request_by_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">&gt;</span> <span class="mi">59</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">&gt;</span> <span class="mi">59</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">61</span><span class="p">)</span>
 
         <span class="n">datos_obtenidos</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">+</span>
@@ -98,15 +86,15 @@ Variable de conteo para no exceder el número de peticiones permitido</p>
                                        <span class="s1">&#39;&amp;lon=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span> <span class="o">+</span>
                                        <span class="bp">self</span><span class="o">.</span><span class="n">apiID</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">idi</span> <span class="o">+</span>
                                        <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_weather_info</span><span class="p">(</span><span class="n">datos_obtenidos</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-6'>
+  <div class='section' id='section-5'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <p>Asigna el formato de horas:minutos am/pm (tiempo local) a las horas de amanecer/atardecer</p>
     </div>
@@ -130,10 +118,10 @@ Variable de conteo para no exceder el número de peticiones permitido</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-6'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       
     </div>

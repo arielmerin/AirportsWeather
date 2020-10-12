@@ -41,7 +41,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="n">validate_file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></pre></div>
+    <span class="n">validate_file</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -142,9 +142,9 @@ Valida que le haya sido enviado uno y sólo un argumento</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entrada_cabezera</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cabezera</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR</span><span class="se">\n</span><span class="s2">El archivo csv debe tener los siguientes encabezados:&quot;</span>
-              <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">origin, destination, origin_latitude, origin_longitude, destination_latitude, destination_longitude&quot;</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></pre></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR</span><span class="se">\n</span><span class="s2">El archivo csv debe tener los siguientes encabezados:&quot;</span>
+                  <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">origin, destination, origin_latitude, origin_longitude, destination_latitude, destination_longitude&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>

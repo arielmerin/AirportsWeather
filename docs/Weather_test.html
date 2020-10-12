@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>Weather_test.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>Weather_test.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>En ensta clase vamos a probar los métodos de la clase Weather</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">from</span> <span class="nn">Weather</span> <span class="kn">import</span> <span class="n">Weather</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Prueba que dado un conjunto de peticiones mayor a 60, haga la pausa de 1 minuto para evitar ser baneada</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Weather_test</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="n">clima</span> <span class="o">=</span> <span class="n">Weather</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Verifica que dado una hora en especial, el formato de regreso sea el adecuado</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_make_api_request_by_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">instante_inicial</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">peticiones</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;19.3371&#39;</span><span class="p">,</span> <span class="s1">&#39;-99.566&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;25.7785&#39;</span><span class="p">,</span> <span class="s1">&#39;-100.107&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;19.4363&#39;</span><span class="p">,</span> <span class="s1">&#39;-99.0721&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;22.2964&#39;</span><span class="p">,</span> <span class="s1">&#39;-97.8659&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;20.5218&#39;</span><span class="p">,</span> <span class="s1">&#39;-103.311&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;31.6361&#39;</span><span class="p">,</span> <span class="s1">&#39;-106.429&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;21.0365&#39;</span><span class="p">,</span> <span class="s1">&#39;-86.8771&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;32.5411&#39;</span><span class="p">,</span> <span class="s1">&#39;-116.97&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;29.0959&#39;</span><span class="p">,</span> <span class="s1">&#39;-111.048&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;18.6537&#39;</span><span class="p">,</span> <span class="s1">&#39;-91.799&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;20.937&#39;</span><span class="p">,</span> <span class="s1">&#39;-89.6577&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;18.5047&#39;</span><span class="p">,</span> <span class="s1">&#39;-88.3268&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;19.1459&#39;</span><span class="p">,</span> <span class="s1">&#39;-96.1873&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;16.9999&#39;</span><span class="p">,</span> <span class="s1">&#39;-96.7266&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;15.7753&#39;</span><span class="p">,</span> <span class="s1">&#39;-96.2626&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;17.6016&#39;</span><span class="p">,</span> <span class="s1">&#39;-101.461&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;20.6801&#39;</span><span class="p">,</span> <span class="s1">&#39;-105.254&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;20.6801&#39;</span><span class="p">,</span> <span class="s1">&#39;-105.2541&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;-12.0219&#39;</span><span class="p">,</span> <span class="s1">&#39;-77.1143&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;22.9892&#39;</span><span class="p">,</span> <span class="s1">&#39;-82.4091&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;20.7901&#39;</span><span class="p">,</span> <span class="s1">&#39;-105.254&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;21.6801&#39;</span><span class="p">,</span> <span class="s1">&#39;-105.2541&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;-10.0219&#39;</span><span class="p">,</span> <span class="s1">&#39;-77.1143&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;25.9892&#39;</span><span class="p">,</span> <span class="s1">&#39;-82.4091&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;4.70159&#39;</span><span class="p">,</span> <span class="s1">&#39;-74.1469&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;25.7932&#39;</span><span class="p">,</span> <span class="s1">&#39;-80.2906&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;33.9425&#39;</span><span class="p">,</span> <span class="s1">&#39;-118.408&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;40.6398&#39;</span><span class="p">,</span> <span class="s1">&#39;-73.7789&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;25.5683&#39;</span><span class="p">,</span> <span class="s1">&#39;-103.411&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;15.8769&#39;</span><span class="p">,</span> <span class="s1">&#39;-97.0891&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;16.7571&#39;</span><span class="p">,</span> <span class="s1">&#39;-99.754&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;23.1614&#39;</span><span class="p">,</span> <span class="s1">&#39;-106.266&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;15.5683&#39;</span><span class="p">,</span> <span class="s1">&#39;-103.411&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;15.8769&#39;</span><span class="p">,</span> <span class="s1">&#39;-91.0891&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;16.7571&#39;</span><span class="p">,</span> <span class="s1">&#39;-99.954&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;23.1614&#39;</span><span class="p">,</span> <span class="s1">&#39;-206.266&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;14.5833&#39;</span><span class="p">,</span> <span class="s1">&#39;-90.5275&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;21.7056&#39;</span><span class="p">,</span> <span class="s1">&#39;-102.318&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;17.997&#39;</span><span class="p">,</span> <span class="s1">&#39;-92.8174&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;17.5391&#39;</span><span class="p">,</span> <span class="s1">&#39;-88.3082&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;32.8968&#39;</span><span class="p">,</span> <span class="s1">&#39;-97.038&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;20.5224&#39;</span><span class="p">,</span> <span class="s1">&#39;-86.9256&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;41.9786&#39;</span><span class="p">,</span> <span class="s1">&#39;-87.9048&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;33.4343&#39;</span><span class="p">,</span> <span class="s1">&#39;-112.012&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;28.7029&#39;</span><span class="p">,</span> <span class="s1">&#39;-105.965&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;20.6173&#39;</span><span class="p">,</span> <span class="s1">&#39;-100.186&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;20.9935&#39;</span><span class="p">,</span> <span class="s1">&#39;-101.481&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;19.1581&#39;</span><span class="p">,</span> <span class="s1">&#39;-98.3714&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;39.8719&#39;</span><span class="p">,</span> <span class="s1">&#39;-75.2411&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;22.2543&#39;</span><span class="p">,</span> <span class="s1">&#39;-100.931&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;35.214&#39;</span><span class="p">,</span> <span class="s1">&#39;-80.9431&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;43.6772&#39;</span><span class="p">,</span> <span class="s1">&#39;-79.6306&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;29.9844&#39;</span><span class="p">,</span> <span class="s1">&#39;-95.3414&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;49.1939&#39;</span><span class="p">,</span> <span class="s1">&#39;-123.184&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;49.0128&#39;</span><span class="p">,</span> <span class="s1">&#39;2.55&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;22.8971&#39;</span><span class="p">,</span> <span class="s1">&#39;-102.687&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;52.3086&#39;</span><span class="p">,</span> <span class="s1">&#39;4.76389&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;33.6367&#39;</span><span class="p">,</span> <span class="s1">&#39;-84.4281&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;27.3926&#39;</span><span class="p">,</span> <span class="s1">&#39;-109.833&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;40.4719&#39;</span><span class="p">,</span> <span class="s1">&#39;-3.56264&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;52.3086&#39;</span><span class="p">,</span> <span class="s1">&#39;4.86389&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;32.6367&#39;</span><span class="p">,</span> <span class="s1">&#39;-84.4281&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;25.3926&#39;</span><span class="p">,</span> <span class="s1">&#39;-109.833&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;39.4719&#39;</span><span class="p">,</span> <span class="s1">&#39;-3.56264&#39;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;-33.393&#39;</span><span class="p">,</span> <span class="s1">&#39;-70.7858&#39;</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">peticion</span> <span class="ow">in</span> <span class="n">peticiones</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clima</span><span class="o">.</span><span class="n">make_api_request_by_coordinates</span><span class="p">(</span><span class="n">peticion</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">peticion</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">instante_final</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">duración</span> <span class="o">=</span> <span class="n">instante_final</span> <span class="o">-</span> <span class="n">instante_inicial</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">duración</span><span class="o">.</span><span class="n">seconds</span> <span class="o">&gt;=</span> <span class="mi">59</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Se encarga de checar que cuando un json con formano no valido es enviado como argumento al método éste no colapsa si no que regresa un mensaje amable de error</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_parse_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">hora</span> <span class="o">=</span> <span class="mi">1602462419</span>
+        <span class="n">formato_correcto</span> <span class="o">=</span> <span class="s2">&quot;7:26 PM (CDT)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">formato_correcto</span><span class="p">,</span> <span class="n">Weather</span><span class="o">.</span><span class="n">formato_de_horas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hora</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">formato_correcto</span><span class="p">,</span> <span class="n">Weather</span><span class="o">.</span><span class="n">formato_de_horas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hora</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_parse_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">example_json</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cod&quot;</span><span class="p">:</span><span class="s2">&quot;404&quot;</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;city not found&quot;</span><span class="p">}</span>
+        <span class="n">error_msj</span> <span class="o">=</span> <span class="s1">&#39;ERROR</span><span class="se">\n</span><span class="s1">No se pudo consultar la información</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">Weather</span><span class="o">.</span><span class="n">parse_weather_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">example_json</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">error_msj</span><span class="p">,</span> <span class="n">Weather</span><span class="o">.</span><span class="n">parse_weather_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">example_json</span><span class="p">)</span> <span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">------------------Test de Weather completos------------------&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
